@@ -1,4 +1,4 @@
-function [c1,s1] = C1So(stim, filters, fSiz, c1SpaceSS, c1ScaleSS, c1OL,numChannel,numPhases)
+function [c1,ds] = C1Do(stim, gfilters, cfilters, fSiz, c1SpaceSS, c1ScaleSS, c1OL,numChannel,numPhases)
 % For more information about S1/C1 unit, refer to Thomas Serre's Matlab
 % code for standard Hmax
 
@@ -35,11 +35,11 @@ for iBand = 1:numScaleBands
     for iScale = 1:length(ScalesInThisBand{iBand})
         sc = (iBand-1)*length(ScalesInThisBand{iBand}) + iScale;
         
+         % -----------Compute Single-Opponency--------------------------
         for iPhase = 1:numPhases
              iUFilterIndex = 0;
              
-            % -----------Compute Single-Opponency--------------------------
-            s1{iBand}{iScale}(:,:,:,:,iPhase) = computeSOhmax(stim,filters{sc}{iPhase},numChannel,numSimpleFilters);%double opponent simple cell
+             s1{iBand}{iScale}(:,:,:,:,iPhase) = computeSOhmax(stim,cfilters{sc}{iPhase},numChannel,numSimpleFilters);%double opponent simple cell
           
             if(~INCLUDEBORDERS)   
                   for jj=1:numChannel
@@ -50,10 +50,36 @@ for iBand = 1:numScaleBands
                   end
             end
             s1{iBand}{iScale} = im2double(s1{iBand}{iScale});
+            
         end
       
-        % --------Divisive normalization over opponent color channels------
-        s1{iBand}{iScale} = divNorm_so(s1{iBand}{iScale},k,sigma,numChannel);
+        % --------Divisive normalization over orientations----------------
+        % Note: this is different from normalization used for computing SO
+        % descriptors
+        s1{iBand}{iScale} = divNorm_do(s1{iBand}{iScale},k,sigma,numSimpleFilters);
+        
+        
+        
+        % -----------Compute Double-Opponency--------------------------
+        % ds: Double-Opponent simple cell(DOS1)
+        % dc: Double-Opponnet complex cell(DOC1)
+        % gfilters is used at the DO stage is the same as the one used at the SO
+        % stage but in the general case any filter with excitatory and inhibitory 
+        % components could be used.
+        
+        tmpdc = zeros(size(stim,1),size(stim,2),numChannel,numSimpleFilters);
+        for iPhase = 1:numPhases
+            % DOS1 units
+            ds = computeDOS1hmax(s1{iBand}{iScale}(:,:,:,:,iPhase),gfilters{sc}{1},numChannel,numSimpleFilters);
+            % DOC1 units
+            tmpdc =  tmpdc + ds ./ numPhases;
+        end
+        
+        % yield invariance to gure-ground reversal.
+        for jj = 1:numChannel/2
+            dc{iBand}{iScale}(:,:,jj,:) = sqrt(tmpdc(:,:,jj,:).^2 + tmpdc(:,:,jj+numChannel/2,:).^2);
+        end
+
         
     end
 end
@@ -69,17 +95,15 @@ end
 
 c1 = {};
 for iBand = 1:numScaleBands
-    for jj=1:numChannel
+    for jj=1:numChannel/2
         for iFilt = 1:numSimpleFilters
-            for iPhase = 1:numPhases
-               
-                c1{iBand}(:,:,jj,iFilt,iPhase) = zeros(size(s1{iBand}{1}(:,:,jj,iFilt,iPhase)));  
-                for iScale = 1:length(ScalesInThisBand{iBand});
-                    c1{iBand}(:,:,jj,iFilt,iPhase) = max(c1{iBand}(:,:,jj,iFilt,iPhase),s1{iBand}{iScale}(:,:,jj,iFilt,iPhase));
-                end
-
+            
+            c1{iBand}(:,:,jj,iFilt,iPhase) = zeros(size(dc{iBand}{1}(:,:,jj,iFilt)));  
+            for iScale = 1:length(ScalesInThisBand{iBand});
+                c1{iBand}(:,:,jj,iFilt) = max(c1{iBand}(:,:,jj,iFilt),dc{iBand}{iScale}(:,:,jj,iFilt));
             end
         end
+        
     end
 end
 
@@ -88,13 +112,13 @@ end
 %   (2) pool over local neighborhood
 for iBand = 1:numScaleBands
     poolRange = (c1SpaceSS(iBand));
-    for jj=1:numChannel
+    
+    for jj=1:numChannel/2
         for iFilt = 1:numSimpleFilters 
-            for iPhase = 1:numPhases
-                c1{iBand}(:,:,jj,iFilt,iPhase) = maxfilter(c1{iBand}(:,:,jj,iFilt,iPhase),[0 0 poolRange-1 poolRange-1]);
-            end
+            c1{iBand}(:,:,jj,iFilt) = maxfilter(c1{iBand}(:,:,jj,iFilt),[0 0 poolRange-1 poolRange-1]);
         end
     end
+    
 end
 
 % 
@@ -103,11 +127,9 @@ for iBand = 1:numScaleBands
     sSS=ceil(c1SpaceSS(iBand)/c1OL);
     clear T;
     
-    for jj=1:numChannel
+    for jj=1:numChannel/2
         for iFilt = 1:numSimpleFilters 
-            for iPhase = 1:numPhases
-                T(:,:,jj,iFilt,iPhase) = c1{iBand}(1:sSS:end,1:sSS:end,jj,iFilt,iPhase); 
-            end
+            T(:,:,jj,iFilt) = c1{iBand}(1:sSS:end,1:sSS:end,jj,iFilt); 
         end
     end
     c1{iBand} = T;

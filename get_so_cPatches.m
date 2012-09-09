@@ -1,21 +1,11 @@
-function cPatches = get_so_cPatches(dataPath)
+function cPatches = get_so_cPatches(dataPath,cI)
 
 % generate the Single-Opponent color dictionary from training set
+% cI is a cell of length 2: training and testing set
 
 
-datapath = '/gpfs/data/tserre/jzhang/general_color_image_processing_functions/Joost_Weijer/ColorDescriptors/soccer_data/soccer';
-numTest = 15;
-numTrain = 25;
-datasplits = load('/gpfs/data/tserre/jzhang/object_recognition/results/soccer/datasplits.mat');
+cPatches =  generate_c1soPatches(datapath,cI)
 
-trn = datasplits.trn1;
-tst = datasplits.tst1;
-
-cPatches =  generate_c1soPatches(datapath,numPhases,numTrain,numTest,trn,tst)
-
-% save the c1 prototypes
-save(fullfile(outDir,sprintf('dictSo_%i_patches_%i_sizes.mat', ...
-     numPatchesPerSize, length(patchSizes))) ,'cPatches','-v7.3');
  
 return
  

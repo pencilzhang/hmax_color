@@ -1,4 +1,4 @@
-function cPatches = generate_c1soPatches(datapath,cI)
+function cPatches = generate_c1doPatches(datapath,cI)
 
 
      
@@ -30,11 +30,11 @@ numChannel = 8; %numbers of opponent color channels
 %%-------------------------------------------------------------------------
 %       The c1 prototypes are extracted from the training images
 % -------------------------------------------------------------------------
-cPatches = extractRandC1SoPatches(cI{1}, numPatchSizes, ...
+cPatches = extractRandC1DoPatches(cI{1}, numPatchSizes, ...
             numPatchesPerSize, patchSizes,numChannel,numPhases);   
 
 % save the c1 prototypes
-save(fullfile(outDir,sprintf('dictSo_%i_patches_%i_sizes.mat', ...
+save(fullfile(outDir,sprintf('dictDo_%i_patches_%i_sizes.mat', ...
      numPatchesPerSize, length(patchSizes))) ,'cPatches','-v7.3');
  
 return

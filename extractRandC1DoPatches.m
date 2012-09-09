@@ -1,4 +1,4 @@
-function cPatches = extractRandC1SoPatches(cItrainingOnly, numPatchSizes, numPatchesPerSize, patchSizes, numChannel,numPhases)
+function cPatches = extractRandC1DoPatches(cItrainingOnly, numPatchSizes, numPatchesPerSize, patchSizes, numChannel,numPhases)
 	%extracts random prototypes as part of the training of the C2 classification 
 	%system. 
 	%Note: we extract only from BAND 2. Extracting from all bands might help
@@ -19,7 +19,7 @@ function cPatches = extractRandC1SoPatches(cItrainingOnly, numPatchSizes, numPat
 	nImages = length(cItrainingOnly);
 
 	%----Settings for Training the random patches--------%
-    rot = [0 90];
+    rot = [90 45 0 -45];
 	c1ScaleSS = [1 3];
 	RF_siz    = [11 13];
 	c1SpaceSS = [10];
@@ -54,18 +54,19 @@ function cPatches = extractRandC1SoPatches(cItrainingOnly, numPatchSizes, numPat
          end
         stim = 2*stim - 1;
 
-		[c1source,s1source] = C1So(stim, cfilters, fSiz, c1SpaceSS, c1ScaleSS, c1OL,numChannel,numPhases);
+		[c1source,s1source] = C1Do(stim,gfilters,cfilters, fSiz, c1SpaceSS, c1ScaleSS, c1OL,numChannel,numPhases);
 		b = c1source{1};
 		bsize(1) = size(b,1);
 		bsize(2) = size(b,2);
 		for j = 1:numPatchSizes,
 			xy = floor(rand(1,2).*(bsize-patchSizes(j)))+1;
-			tmp = b(xy(1):xy(1)+patchSizes(j)-1,xy(2):xy(2)+patchSizes(j)-1,:,:,:);
+			tmp = b(xy(1):xy(1)+patchSizes(j)-1,xy(2):xy(2)+patchSizes(j)-1,:,:);
 			pind(j) = pind(j) + 1; % counting how many patches per size
 			cPatches{j}(:,pind(j)) = tmp(:);
 		end
     end
 
 	fprintf('\n');
+    
     
     return
