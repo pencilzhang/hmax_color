@@ -38,7 +38,7 @@ for iBand = 1:numScaleBands
         for iPhase = 1:numPhases
              iUFilterIndex = 0;
              
-            % Compute Single-Opponency
+            % -----------Compute Single-Opponency--------------------------
             s1{iBand}{iScale}(:,:,:,:,iPhase) = computeSOhmax(stim,filters{sc}{iPhase},numChannel,numSimpleFilters);%double opponent simple cell
           
             if(~INCLUDEBORDERS)   
@@ -52,7 +52,7 @@ for iBand = 1:numScaleBands
             s1{iBand}{iScale} = im2double(s1{iBand}{iScale});
         end
       
-        % Divisive normalization over opponent color channels
+        % --------Divisive normalization over opponent color channels------
         s1{iBand}{iScale} = divNorm_so(s1{iBand}{iScale},k,sigma,numChannel);
         
     end
