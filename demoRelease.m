@@ -1,6 +1,6 @@
-function  C2res = demoDoRelease(dataPath,cI)
+function  C2res = demoRelease(dataPath,cI)
 
-% demonstrates how to use C2 Double-Opponent model features in a pattern classification framework
+% demonstrates how to use C2 features in a pattern classification framework
 % cI is a cell of length 2: training and testing set
 
 
@@ -10,28 +10,23 @@ READPATCHESFROMFILE = 1;
 patchSizes = [4 8 12 16];
 numPatchSizes = length(patchSizes);
 numPatchesPerSize = 250;
-numPhases = 1; 
-numChannel = 8; %numbers of opponent color channels
-% C(cyan) = G+B, Y(yellow) = R+G 
-% numChannel=8, R+/G-,G+/R-,R+/C-,C+/R-,Y+/B-/B+/Y-,Wh,Bl; 
-% numChannel=6, then close the Wh-Bl channel.
 
 
 
 %% ------------------------------------------------------------------------
-%           load C1DO prototypes if exsits or extract your prototypes
+%           load C1 prototypes if exsits or extract your prototypes
 % -------------------------------------------------------------------------
 if ~READPATCHESFROMFILE
     %take more time to compute
-    cPatches = extractRandDoC1Patches(cI{1}, numPatchSizes, ...
+    cPatches = extractRandC1Patches(cI{1}, numPatchSizes, ...
             numPatchesPerSize, patchSizes,numChannel,numPhases);
     
-    save(fullfile(outDir,sprintf('dictDo_%i_patches_%i_sizes.mat', ...
+    save(fullfile(outDir,sprintf('dict_%i_patches_%i_sizes.mat', ...
      numPatchesPerSize, length(patchSizes))) ,'cPatches','-v7.3');
      
 else
     fprintf('reading patches');
-    cPatches = load(sprintf('dictDo_%i_patches_%i_sizes.mat', ...
+    cPatches = load(sprintf('dict_%i_patches_%i_sizes.mat', ...
            numPatchesPerSize, length(patchSizes)) ,'cPatches');  
     cPatches = cPatches.cPatches;   
 
@@ -40,7 +35,7 @@ end
 
 
 %% ------------------------------------------------------------------------
-%                            compute C2DO features
+%                            compute C2 features
 % -------------------------------------------------------------------------
 
 %----Settings for Testing --------%
@@ -57,21 +52,21 @@ Div       = div;
 
 fprintf(1,'Initializing color gabor filters -- full set...');
 %creates the gabor filters use to extract the S1 layer
-[fSiz,gfilters,subfilters,cfilters,c1OL,numSimpleFilters] = init_color_gabor(rot, RF_siz, Div,numChannel,numPhases);
+[fSiz,filters,c1OL,numSimpleFilters] = init_gabor(rot, RF_siz, Div);
 fprintf(1,'done\n');
 
              
 % % The actual C2 features are computed below for each one of the training/testing directories
 tic
 for i = 1:2,
-    C2res{i} = extractC2Doforcell(gfilters,cfilters,fSiz,c1SpaceSS,c1ScaleSS,...
+    C2res{i} = extractC2forcell(filters,fSiz,c1SpaceSS,c1ScaleSS,...
         c1OL,cPatches,cI{i},numPatchSizes,numChannel,numPhases);
     toc
 end
 totaltimespectextractingC2 = toc;
 
 % save C2DO features
-save(fullfile(outDir,sprintf('c2do_%i_patches_%i_sizes.mat', ...
+save(fullfile(outDir,sprintf('c2_%i_patches_%i_sizes.mat', ...
             numPatchesPerSize, length(patchSizes))), 'C2res','-v7.3');
         
 return

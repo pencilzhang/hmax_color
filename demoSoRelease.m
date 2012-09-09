@@ -24,7 +24,7 @@ numChannel = 8; %numbers of opponent color channels
 if ~READPATCHESFROMFILE
     %take more time to compute
     cPatches = extractRandSoC1Patches(cI{1}, numPatchSizes, ...
-            numPatchesPerSize, patchSizes,numChannel,numPhases); %fix: extracting from positive only
+            numPatchesPerSize, patchSizes,numChannel,numPhases);
     
     save(fullfile(outDir,sprintf('dictSo_%i_patches_%i_sizes.mat', ...
      numPatchesPerSize, length(patchSizes))) ,'cPatches','-v7.3');
