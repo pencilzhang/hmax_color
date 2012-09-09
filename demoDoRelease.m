@@ -1,4 +1,4 @@
-function  C2res = demoDoRelease(dataPath,cI)
+function  C2res = demoDoRelease(cI)
 
 % demonstrates how to use C2 Double-Opponent model features in a pattern classification framework
 % cI is a cell of length 2: training and testing set

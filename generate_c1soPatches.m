@@ -1,4 +1,4 @@
-function cPatches = generate_c1soPatches(datapath,cI)
+function cPatches = generate_c1soPatches(cI)
 
 
      

@@ -1,4 +1,4 @@
-function  C2res = demoRelease(dataPath,cI)
+function  C2res = demoRelease(cI)
 
 % demonstrates how to use C2 features in a pattern classification framework
 % cI is a cell of length 2: training and testing set
