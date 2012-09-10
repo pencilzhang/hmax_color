@@ -1,4 +1,4 @@
-Three demos illustrate the biologically inspired grayscale/Single-Opponent(SO)/Double-Opponent(DO) Hmax model for object recognition
+Three demoes illustrate the biologically inspired grayscale/Single-Opponent(SO)/Double-Opponent(DO) Hmax model for object recognition
 ===============
 
 demoRelease: grayscale Hmax

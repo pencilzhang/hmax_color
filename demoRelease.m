@@ -5,6 +5,12 @@ function  C2res = demoRelease(cI)
 % See more details please refer to Serre et al.2007
 
 
+outDir = sprintf('../results');
+if ~exist(outDir)
+    mkdir(outDir);
+end
+
+
 %%
 READPATCHESFROMFILE = 1;
 patchSizes = [4 8 12 16];

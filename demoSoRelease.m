@@ -8,6 +8,12 @@ function  C2res = demoSoRelease(cI)
 % If you find any bugs, please contact with Jun Zhang(zhangjun1126@gmail.com)
 
 
+outDir = sprintf('../results');
+if ~exist(outDir)
+    mkdir(outDir);
+end
+
+
 %%
 READPATCHESFROMFILE = 1;
 patchSizes = [4 8 12 16];
