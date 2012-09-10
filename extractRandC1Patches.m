@@ -11,7 +11,7 @@ function cPatches = extractRandC1Patches(cItrainingOnly, numPatchSizes, numPatch
 if nargin<2
   numPatchSizes = 4;
   numPatchesPerSize = 250;
-  patchSizes = 4:4:16
+  patchSizes = 4:4:16;
 end
 
 nImages = length(cItrainingOnly);
@@ -20,8 +20,6 @@ rot = [90 -45 0 45];
 c1ScaleSS = [1 3];
 RF_siz    = [11 13];
 c1SpaceSS = [10];
-minFS     = 11;
-maxFS     = 13;
 div = [4:-.05:3.2];
 Div       = div(3:4);
 
@@ -45,7 +43,6 @@ for i = 1:numPatchesPerSize,
   ii = floor(rand*nImages) + 1;
   fprintf(1,'.');
   stim = cItrainingOnly{ii};
-  img_siz = size(stim);
   
   [m,n,unused] = size(stim);
   if unused ~= 1;

@@ -5,7 +5,7 @@ function  C2res = demoDoRelease(cI)
 % See details to compute DO descriptors in DODescriptor.m
 % You could mofify your spatial info., such as number of phases,
 % orientations to adapt to your task
-% If you find any bugs, please contact with Jun Zhang (zhangjun1126@gmail.com)
+% If you find any bugs, please contact with Jun Zhang(zhangjun1126@gmail.com)
 
 
 %%
@@ -22,11 +22,11 @@ numChannel = 8; %numbers of opponent color channels
 
 
 %% ------------------------------------------------------------------------
-%           load C1DO prototypes if exsits or extract your prototypes
+%           load C1DO prototypes if exsits or extract your own prototypes
 % -------------------------------------------------------------------------
 if ~READPATCHESFROMFILE
     %take more time to compute
-    cPatches = extractRandDoC1Patches(cI{1}, numPatchSizes, ...
+    cPatches = extractRandC1DoPatches(cI{1}, numPatchSizes, ...
             numPatchesPerSize, patchSizes,numChannel,numPhases);
     
     save(fullfile(outDir,sprintf('dictDo_%i_patches_%i_sizes.mat', ...

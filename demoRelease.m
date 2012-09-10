@@ -14,7 +14,7 @@ numPatchesPerSize = 250;
 
 
 %% ------------------------------------------------------------------------
-%           load C1 prototypes if exsits or extract your prototypes
+%           load C1 prototypes if exsits or extract your own prototypes
 % -------------------------------------------------------------------------
 if ~READPATCHESFROMFILE
     %take more time to compute

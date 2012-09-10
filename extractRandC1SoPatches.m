@@ -23,15 +23,13 @@ function cPatches = extractRandC1SoPatches(cItrainingOnly, numPatchSizes, numPat
 	c1ScaleSS = [1 3];
 	RF_siz    = [11 13];
 	c1SpaceSS = [10];
-	minFS     = 11;
-	maxFS     = 13;
 	div = [4:-.05:3.2];
 	Div       = div(3:4);
 	%--- END Settings for Training the random patches--------%
 
     fprintf(1,'Initializing color gabor filters -- full set...');
     %creates the gabor filters use to extract the S1 layer
-    [fSiz,gfilters,subfilters,cfilters,c1OL,numSimpleFilters] = init_color_gabor(rot, RF_siz, Div,numChannel,numPhases);
+    [fSiz,~,~,cfilters,c1OL,numOrients] = init_color_gabor(rot, RF_siz, Div,numChannel,numPhases);
     fprintf(1,'done\n');
 
 	cPatches = cell(numPatchSizes,1);
@@ -40,14 +38,14 @@ function cPatches = extractRandC1SoPatches(cItrainingOnly, numPatchSizes, numPat
 
 
 	for j = 1:numPatchSizes
-        cPatches{j} = zeros(patchSizes(j)^2*length(rot)*numChannel*numPhases,numPatchesPerSize);
+        cPatches{j} = zeros(patchSizes(j)^2*numOrients*numChannel*numPhases,numPatchesPerSize);
     end
     
     %% Generating dictionary
 	for i = 1:numPatchesPerSize
 		ii = floor(rand*nImages) + 1;
 		stim = cItrainingOnly{ii};
-        [m,n,unused] = size(stim);
+%         [m,n,unused] = size(stim);
         
         if max(stim(:))>1
                 stim = double(stim)./255;
