@@ -1,4 +1,4 @@
-function [fSiz,gfilters,subfilters, cfilters,c1OL,numSimpleFilters] = init_color_gabor_phases(rot, RF_siz, Div,numChannel,numPhases)
+function [fSiz,gfilters,subfilters, cfilters,c1OL,numOrients] = init_color_gabor(rot, RF_siz, Div,numChannel,numPhases)
 
 gfilters = {};% grayscale Gabor filter bank
 subfilters = {}; %  positive(excitory)/negative(inhibitory) units of Gabor filter
@@ -18,7 +18,7 @@ for i =1:length(rr)
 end
 
 c1OL = 2;
-numSimpleFilters = length(rot);
+numOrients = length(rot);
 
 
 return

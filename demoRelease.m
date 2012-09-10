@@ -2,7 +2,7 @@ function  C2res = demoRelease(cI)
 
 % demonstrates how to use C2 features in a pattern classification framework
 % cI is a cell of length 2: training and testing set
-
+% See more details please refer to Serre et al.2007
 
 
 %%
@@ -43,8 +43,6 @@ rot = [90 45 0 -45];
 c1ScaleSS = [1:2:18];
 RF_siz    = [7:2:39];
 c1SpaceSS = [8:2:22];
-minFS     = 7;
-maxFS     = 39;
 div = [4:-.05:3.2];
 Div       = div;
 %      %--- END Settings for Testing --------%
@@ -52,15 +50,16 @@ Div       = div;
 
 fprintf(1,'Initializing color gabor filters -- full set...');
 %creates the gabor filters use to extract the S1 layer
-[fSiz,filters,c1OL,numSimpleFilters] = init_gabor(rot, RF_siz, Div);
+[fSiz,filters,c1OL,numSimpleFilters] = init_gabor(rot, RF_siz, Div); 
 fprintf(1,'done\n');
 
              
 % % The actual C2 features are computed below for each one of the training/testing directories
+C2res = cell(1,2);
 tic
 for i = 1:2,
     C2res{i} = extractC2forcell(filters,fSiz,c1SpaceSS,c1ScaleSS,...
-        c1OL,cPatches,cI{i},numPatchSizes,numChannel,numPhases);
+        c1OL,cPatches,cI{i},numPatchSizes,numSimpleFilters);
     toc
 end
 totaltimespectextractingC2 = toc;

@@ -1,5 +1,4 @@
 function [c2,s2,c1,s1] = C2(stim,filters,fSiz,c1SpaceSS,c1ScaleSS,c1OL,s2Target,c1)
-%function [c2,s2,c1,s1] = C2(stim,filters,fSiz,c1SpaceSS,c1ScaleSS,c1OL,s2Target,c1)
 %
 % given an image extracts layers s1 c1 s2 and finally c2
 % for inputs stim, filters, fSiz, c1SpaceSS,c1ScaleeSS, and c1OL

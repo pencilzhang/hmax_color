@@ -30,6 +30,7 @@ L = size(s2Target,1) / (nfilts1*nfilts2);
 PatchSize = [L^.5,L^.5,nfilts1,nfilts2];
 
 
+
 %%-------------------------------------------------------------------------
 % Build s2do: for all prototypes in s2Target (RBF centers) for all bands
 % calculate the image response
@@ -43,6 +44,7 @@ for iCenter = 1:n_rbf_centers
      s2{iCenter}{iBand} = WindowedDoPatchDistance(c1BandImage{iBand},Patch);  
   end
 end
+
 
 
 %%-------------------------------------------------------------------------

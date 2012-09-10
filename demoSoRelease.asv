@@ -1,5 +1,5 @@
 function  C2res = demoSoRelease(cI)
-
+%
 % demonstrates how to use C2 Single-Opponent model features in a pattern classification framework
 % cI is a cell of length 2: training and testing set
 % See details to compute SO descriptors in SODescriptor.m
@@ -51,6 +51,8 @@ rot = [0 90];
 c1ScaleSS = [1:2:18];
 RF_siz    = [7:2:39];
 c1SpaceSS = [8:2:22];
+minFS     = 7;
+maxFS     = 39;
 div = [4:-.05:3.2];
 Div       = div;
 %      %--- END Settings for Testing --------%
@@ -63,7 +65,6 @@ fprintf(1,'done\n');
 
              
 % % The actual C2 features are computed below for each one of the training/testing directories
-C2res = cell(1,2);
 tic
 for i = 1:2,
     C2res{i} = extractC2Soforcell(cfilters,fSiz,c1SpaceSS,c1ScaleSS,...
@@ -77,6 +78,5 @@ save(fullfile(outDir,sprintf('c2so_%i_patches_%i_sizes.mat', ...
             numPatchesPerSize, length(patchSizes))), 'C2res','-v7.3');
     
         
-return
 
-%
+return

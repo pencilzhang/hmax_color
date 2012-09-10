@@ -1,5 +1,4 @@
-function mC2 = extractC2forcell(filters,fSiz,c1SpaceSS,c1ScaleSS,c1OL,cPatches,cImages,numPatchSizes);
-%function mC2 = extractC2forcell(filters,fSiz,c1SpaceSS,c1ScaleSS,c1OL,cPatches,cImages,numPatchSizes);
+function mC2 = extractC2forcell(filters,fSiz,c1SpaceSS,c1ScaleSS,c1OL,cPatches,cImages,numPatchSizes,numSimpleFilters);
 %
 %this function is a wrapper of C2. For each image in the cell cImages, 
 %it extracts all the values of the C2 layer 
@@ -18,9 +17,9 @@ numPatchSizes = min(numPatchSizes,length(cPatches));
 %all the patches are being flipped. This is becuase in matlab conv2 is much faster than filter2
 for i = 1:numPatchSizes,
   [siz,numpatch] = size(cPatches{i});
-  siz = sqrt(siz/4);
+  siz = sqrt(siz/numSimpleFilters);
   for j = 1:numpatch,
-    tmp = reshape(cPatches{i}(:,j),[siz,siz,4]);
+    tmp = reshape(cPatches{i}(:,j),[siz,siz,numSimpleFilters]);
     tmp = tmp(end:-1:1,end:-1:1,:);
     cPatches{i}(:,j) = tmp(:);
   end
@@ -34,7 +33,7 @@ for i = 1:length(cImages), %for every input image
   stim = cImages{i};
   img_siz = size(stim);
 
-  [m,n,unused] = size(stim);
+%   [m,n,unused] = size(stim);
   if unused ~= 1;
       stim = rgb2gray(stim);
   end
@@ -44,7 +43,7 @@ for i = 1:length(cImages), %for every input image
   for j = 1:numPatchSizes, %for every unique patch size
     fprintf(1,'.');
     if isempty(c1),  %compute C2
-      [tmpC2,tmp,c1] = C2(stim,filters,fSiz,c1SpaceSS,c1ScaleSS,c1OL,cPatches{j});
+      [tmpC2,~,c1] = C2(stim,filters,fSiz,c1SpaceSS,c1ScaleSS,c1OL,cPatches{j});
     else
       [tmpC2] = C2(stim,filters,fSiz,c1SpaceSS,c1ScaleSS,c1OL,cPatches{j},c1);
     end

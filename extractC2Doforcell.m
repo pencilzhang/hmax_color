@@ -1,4 +1,4 @@
-function mC2 = extractC2Doforcell(gfilters,cfilters,fSiz,c1SpaceSS,c1ScaleSS,c1OL,cPatches,cImages,numPatchSizes,numChannel,numPhases)
+function mC2 = extractC2Doforcell(gfilters,cfilters,fSiz,c1SpaceSS,c1ScaleSS,c1OL,cPatches,cImages,numPatchSizes,numChannel,numPhases,numOrients)
 	%
 	%this function is a wrapper of C2. For each image in the cell cImages, 
 	%it extracts all the values of the C2 layer 
@@ -14,9 +14,9 @@ function mC2 = extractC2Doforcell(gfilters,cfilters,fSiz,c1SpaceSS,c1ScaleSS,c1O
 	%all the patches are being flipped. This is becuase in matlab conv2 is much faster than filter2
 	for i = 1:numPatchSizes,
 		[siz,numpatch] = size(cPatches{i});
-		siz = sqrt(siz/(numChannel/2*4));
+		siz = sqrt(siz/(numChannel/2*numOrients));
 		for j = 1:numpatch,
-			tmp = reshape(cPatches{i}(:,j),[siz,siz,numChannel/2,4];
+			tmp = reshape(cPatches{i}(:,j),[siz,siz,numChannel/2,numOrients]);
 			tmp = tmp(end:-1:1,end:-1:1,:,:);
 			cPatches{i}(:,j) = tmp(:);
 		end
@@ -28,7 +28,7 @@ function mC2 = extractC2Doforcell(gfilters,cfilters,fSiz,c1SpaceSS,c1ScaleSS,c1O
     for i = 1:nImages
         fprintf(1,'%d:',i);
         stim = cImages{i};
-        [m,n,unused] = size(stim);
+%         [m,n,unused] = size(stim);
         if max(stim(:))>1
             stim = double(stim)./255;
         end
@@ -40,7 +40,7 @@ function mC2 = extractC2Doforcell(gfilters,cfilters,fSiz,c1SpaceSS,c1ScaleSS,c1O
         for j = 1:numPatchSizes, %for every unique patch size
              
             if isempty(c1),  %compute C2DO
-                [tmpC2,s2,c1] = C2Do(stim, gfilters,cfilters,fSiz,c1SpaceSS,c1ScaleSS,c1OL,cPatches{j},numChannel,numPhases);
+                [tmpC2,~,c1] = C2Do(stim, gfilters,cfilters,fSiz,c1SpaceSS,c1ScaleSS,c1OL,cPatches{j},numChannel,numPhases);
             else
                 [tmpC2] = C2Do(stim, gfilters,cfilters,fSiz,c1SpaceSS,c1ScaleSS,c1OL,cPatches{j},c1,numChannel,numPhases);
             end
@@ -54,4 +54,6 @@ function mC2 = extractC2Doforcell(gfilters,cfilters,fSiz,c1SpaceSS,c1ScaleSS,c1O
     
     
     return
+    
+    %
 

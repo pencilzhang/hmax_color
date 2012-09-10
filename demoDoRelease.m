@@ -2,7 +2,10 @@ function  C2res = demoDoRelease(cI)
 
 % demonstrates how to use C2 Double-Opponent model features in a pattern classification framework
 % cI is a cell of length 2: training and testing set
-
+% See details to compute DO descriptors in DODescriptor.m
+% You could mofify your spatial info., such as number of phases,
+% orientations to adapt to your task
+% If you find any bugs, please contact with Jun Zhang (zhangjun1126@gmail.com)
 
 
 %%
@@ -48,8 +51,6 @@ rot = [90 45 0 -45];
 c1ScaleSS = [1:2:18];
 RF_siz    = [7:2:39];
 c1SpaceSS = [8:2:22];
-minFS     = 7;
-maxFS     = 39;
 div = [4:-.05:3.2];
 Div       = div;
 %      %--- END Settings for Testing --------%
@@ -57,15 +58,16 @@ Div       = div;
 
 fprintf(1,'Initializing color gabor filters -- full set...');
 %creates the gabor filters use to extract the S1 layer
-[fSiz,gfilters,subfilters,cfilters,c1OL,numSimpleFilters] = init_color_gabor(rot, RF_siz, Div,numChannel,numPhases);
+[fSiz,gfilters,~,cfilters,c1OL,numOrients] = init_color_gabor(rot, RF_siz, Div,numChannel,numPhases);
 fprintf(1,'done\n');
 
              
 % % The actual C2 features are computed below for each one of the training/testing directories
+C2res = cell(1,2);
 tic
 for i = 1:2,
     C2res{i} = extractC2Doforcell(gfilters,cfilters,fSiz,c1SpaceSS,c1ScaleSS,...
-        c1OL,cPatches,cI{i},numPatchSizes,numChannel,numPhases);
+        c1OL,cPatches,cI{i},numPatchSizes,numChannel,numPhases,numOrients);
     toc
 end
 totaltimespectextractingC2 = toc;
