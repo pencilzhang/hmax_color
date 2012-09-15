@@ -1,6 +1,5 @@
 function  C2res = demoDoRelease(cI)
 %
-
 % demonstrates how to use C2 Double-Opponent model features in a pattern classification framework
 % on soccer team dataset (color predominant)
 % cI is a cell of length 2: training and testing set
@@ -55,7 +54,7 @@ end
 % -------------------------------------------------------------------------
 
 %----Settings for Testing --------%
-rot       = [90 45 0 -45];
+rot       = [0 90];
 c1ScaleSS = 1:2:18;
 RF_siz    = 7:2:39;
 c1SpaceSS = 8:2:22;
@@ -66,7 +65,7 @@ Div       = div;
 
 fprintf(1,'Initializing color gabor filters -- full set...');
 %creates the gabor filters use to extract the S1 layer
-[fSiz,gfilters,~,cfilters,c1OL,numOrients] = init_color_gabor(rot, RF_siz, Div,numChannel,numPhases);
+[fSiz,gfilters,cfilters,c1OL,numOrients] = init_color_gabor(rot, RF_siz, Div,numChannel,numPhases);
 fprintf(1,'done\n');
 
 

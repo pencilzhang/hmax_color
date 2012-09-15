@@ -12,7 +12,7 @@ function D = WindowedSoPatchDistance(Im,Patch)
 dIm = size(Im,3);
 dPatch = size(Im,3);
 if(dIm ~= dPatch)
-  fprintf('The patch and image must be of the same number of layers');
+    fprintf('The patch and image must be of the same number of layers');
 end
 
 d =  size(Patch);
@@ -20,25 +20,25 @@ Psqr = sum(sum(sum(sum(sum(Patch.^2)))));
 Imsq = Im.^2;
 
 % check the number of phases
-if  d5 ~= 1
-    Imsq = sum(sum(sum(Imsq,5),4),3);
-else
+if  numel(d)<5
     Imsq = sum(sum(Imsq,4),3);
+else
+    Imsq = sum(sum(sum(Imsq,5),4),3);
 end
 
-sum_support = [ceil(d(2)/2)-1,ceil(s(1)/2)-1,floor(d(2)/2),floor(d(1)/2)];
+sum_support = [ceil(d(2)/2)-1,ceil(d(1)/2)-1,floor(d(2)/2),floor(d(1)/2)];
 Imsq = sumfilter(Imsq,sum_support);
 PI = zeros(size(Imsq));
 
 for i = 1:dIm
     for j=1:d(4)
         
-        if d(5) ~= 1
+        if numel(d)<5
+            PI = PI + conv2(Im(:,:,i,j),Patch(:,:,i,j), 'same');
+        else
             for k=1:d(5)
                 PI = PI + conv2(Im(:,:,i,j,k),Patch(:,:,i,j,k), 'same');
             end
-        else
-            PI = PI + conv2(Im(:,:,i,j),Patch(:,:,i,j), 'same');
         end
         
     end

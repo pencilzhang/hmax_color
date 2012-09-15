@@ -1,5 +1,5 @@
 function  C2res = demoSoRelease(cI)
-
+%
 % demonstrates how to use C2 Single-Opponent model features in a pattern classification framework
 % on soccer team dataset (color predominant)
 % cI is a cell of length 2: training and testing set
@@ -9,11 +9,11 @@ function  C2res = demoSoRelease(cI)
 % If you find any bugs, please contact with Jun Zhang(zhangjun1126@gmail.com)
 
 
+
 outDir = sprintf('../results');
 if ~exist(outDir,'dir')
     mkdir(outDir);
 end
-
 
 
 

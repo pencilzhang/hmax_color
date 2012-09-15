@@ -6,6 +6,7 @@ function  C2res = demoRelease(cI)
 % More details please refer to Serre et al.2007
 
 
+
 % creat a directory to store the results
 outDir = sprintf('../results');
 if ~exist(outDir,'dir')
@@ -50,7 +51,7 @@ end
 % -------------------------------------------------------------------------
 
 %----Settings for Testing --------%
-rot       = [90 45 0 -45];
+rot       = [0 90];
 c1ScaleSS = 1:2:18;
 RF_siz    = 7:2:39;
 c1SpaceSS = 8:2:22;
