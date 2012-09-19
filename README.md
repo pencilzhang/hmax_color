@@ -24,10 +24,8 @@ dictSo_250_patches_4_sizes: SO
 dictDo_250_patches_4_sizes: DO
 
 
+If you use it, please cite:
+Zhang J., Barhomi Y., and Serre T. A new biologically inspired color image descriptor.In: ECCV, Florence, Italy, October 2012. 
+
 
 For comments or questions please contact Jun Zhang (zhangjun1126@gmail.com)
-
-
-Publications:
-Zhang J., Barhomi Y., and Serre T. A new biologically inspired color image descriptor.In: ECCV, Florence, Italy, October 2012. 
-Serre, T., Wolf, L., Bileschi, S.M., Riesenhuber, M., Poggio, T.: Robust object recognition with cortex-like mechanisms. TPAMI, 2007.
