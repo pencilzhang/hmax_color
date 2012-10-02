@@ -6,7 +6,7 @@ function  C2res = demoSoRelease(cI)
 % See details to compute SO descriptors in SODescriptor.m
 % You could mofify your spatial info., such as number of phases,
 % orientations to adapt to your task
-% If you find any bugs, please contact with Jun Zhang(zhangjun1126@gmail.com)
+% If you find any bugs, please contact Jun Zhang(zhangjun1126@gmail.com)
 
 
 
@@ -21,7 +21,7 @@ end
 %           load C1SO prototypes if exsits or extract your own prototypes
 % -------------------------------------------------------------------------
 
-READPATCHESFROMFILE = 1;
+READPATCHESFROMFILE = 0;
 patchSizes = [4 8 12 16];
 numPatchSizes = length(patchSizes);
 numPatchesPerSize = 250;
